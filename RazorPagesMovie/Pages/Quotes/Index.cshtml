@@ -1,0 +1,130 @@
+﻿@page
+
+@model MegaDesk.Pages.Quotes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<article class="quoteTable">
+    <h2>MegaDesk Quotes</h2>
+
+    @*<p>
+        <a asp-page="Create">New Quote</a>
+    </p>*@
+    <form asp-page="./Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by Customer Name:
+                <input type="text" name="SearchString" value="@Model.SearchString" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                @*Find by Keyword in Notes:
+                    <input type="text" name="KeySearchString" value="@Model.KeySearchString" />
+                    <input type="submit" value="SearchKey" class="btn btn-default" /> |*@
+                <a asp-page="./Index">Back to full List</a>
+            </p>
+        </div>
+    </form>
+    <hr>
+    @*<form>
+            <p>
+                <select asp-for="Desk" asp-items="Model.Quote">
+                    <option value="">All</option>
+                </select>
+                Quote: <input type="text" name="SearchString" value="All">
+
+                <input type="submit" value="Filter" />
+            </p>
+        </form>*@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.QuoteSort" asp-route-SearchString="@Model.SearchString">@Html.DisplayNameFor(model => model.Desk[0].name)</a>
+
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Desk[0].name)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Desk[0].width)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Desk[0].depth)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Desk[0].numOfDrawers)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Desk[0].price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Desk[0].material)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Desk[0].rushOrder)
+                </th>
+                <th>
+                    <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort" asp-route-SearchString="@Model.SearchString">@Html.DisplayNameFor(model => model.Desk[0].DateAdded)</a>
+
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Desk)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.width)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.depth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numOfDrawers)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.material)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rushOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateAdded)
+                    </td>
+                    <td>
+
+                        <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</article>
+@{
+    var prevDisabled = !Model.Desk.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Desk.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Desk.PageIndex - 1)"
+   asp-route-currentFilter="@Model.SearchString"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Desk.PageIndex + 1)"
+   asp-route-currentFilter="@Model.SearchString"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
